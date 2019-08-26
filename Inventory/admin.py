@@ -18,7 +18,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'contact_number', 'employee_id', 'name',  'is_staff',)
+        fields = ('email', 'contact_number', 'employee_id', 'name', )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -46,7 +46,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'contact_number', 'employee_id', 'name', 'is_staff', )
+        fields = ('email', 'password', 'contact_number', 'employee_id', 'name',  )
 
     def clean_password(self):
 
@@ -65,14 +65,14 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('email',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('contact_number', 'employee_id', 'name', 'is_staff',)}),
+        ('Personal info', {'fields': ('contact_number', 'employee_id', 'name')}),
            )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email',  'password1', 'password2', 'contact_number', 'employee_id', 'name', 'is_staff')}
+            'fields': ('email',  'password1', 'password2', 'contact_number', 'employee_id', 'name')}
         ),
     )
     search_fields = ('email',)

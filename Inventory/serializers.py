@@ -2,11 +2,6 @@ from rest_framework import serializers
 from . import models
 
 
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        fields = '__all__'
-        model = models.CustomUser
 
 
 class InventorySerializer(serializers.ModelSerializer):
@@ -35,3 +30,28 @@ class InventoryValueSerializer(serializers.ModelSerializer):
     class Meta:
          fields = '__all__'
          model = models.InventoryValues
+
+
+class UserInventorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+         fields = '__all__'
+         model = models.UserInventory
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = '__all__'
+        model = models.CustomUser
+
+
+class UserRoleSerializer(serializers.ModelSerializer):
+    level = UserSerializer(read_only=True)
+
+    class Meta:
+         fields = '__all__'
+         model = models.UserRole
+
+
+

@@ -31,21 +31,18 @@ class CustomAccountManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True)
-    employee_id = models.CharField(max_length=20)
+    employee_id = models.CharField(max_length=13, unique=True)
     name = models.CharField(max_length=50)
-    role = models.CharField(max_length=100, null=True)
-    contact_number = models.CharField(max_length=13, null=False)
+    contact_number = models.CharField(max_length=13, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     is_first_login = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=True)
 
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     class Meta:
-        db_table = 'Login'
+        db_table = 'User'
 
     objects = CustomAccountManager()
 
@@ -70,25 +67,43 @@ class Roles(models.Model):
         db_table = 'Roles'
 
 
+
+
+
+
 class Inventory(models.Model):
-      product_id = models.IntegerField(null=True)
+
       product_type = models.CharField(max_length=500)
       class Meta:
-          db_table = 'Inventory_Types'
+          db_table = 'Inventory_Ref'
 
 
 class InventoryValues(models.Model):
-      product_type = models.CharField(max_length=500)
+
+      product_type_id = models.IntegerField(null=False)
       model = models.CharField(max_length=100)
-      serial_no = models.CharField(max_length=100)
-      sim_no = models.CharField(max_length=100, null=True)
+      serial_no = models.CharField(max_length=100, blank= True)
+      sim_no = models.CharField(max_length=100, null=True, blank= True)
       status = models.CharField(max_length=100, default='Available')
-      manufacturer = models.CharField(max_length=100, null=True)
-      configuration = models.CharField(max_length=100, null=True)
-      assignedTo = models.CharField(max_length=100, null=True)
+      manufacturer = models.CharField(max_length=100, null=True, blank= True)
+      configuration = models.CharField(max_length=100, null=True, blank= True)
+      purchase_dt = models.DateTimeField(auto_now_add=False, null=True, blank= True)
+      creation_dt = models.DateTimeField(auto_now_add=True, null=True, blank= True)
 
       class Meta:
          db_table = 'Inventory_Values'
+
+
+class UserInventory(models.Model):
+
+    employee_id = models.CharField(max_length=100, null=True, blank= True, default='0')
+    product = models.ForeignKey(InventoryValues, on_delete=models.CASCADE)
+    #start_date = models.DateTimeField(auto_now_add=True)
+    #end_date = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        db_table = 'User_Inventory'
 
 
 class Status(models.Model):
@@ -96,20 +111,20 @@ class Status(models.Model):
     status_code = models.CharField(max_length=100)
 
     class Meta:
-        db_table = 'Request_Status'
+        db_table = 'Request_Status_Values'
 
 class RequestInventory(models.Model):
 
     request_id = models.CharField(max_length=100, null=True)
     employee_id = models.CharField(max_length=100)
     name = models.CharField(max_length=30)
-    type = models.CharField(max_length=100)
+    product_type = models.CharField(max_length=100)
     startDate = models.DateTimeField(auto_now_add=False)
     endDate = models.DateTimeField(auto_now_add=False)
     reason = models.CharField(max_length=30)
-    status = models.CharField(max_length=30, default='Pending With L1')
+    status = models.CharField(max_length=30, default='1')
     laptopNO = models.CharField(max_length=30, null=True)
-    datacardNO = models.CharField(max_length=30, null=True)
+    dataCardNO = models.CharField(max_length=30, null=True)
     comment = models.CharField(max_length=30, null=True)
 
     class Meta:
@@ -126,4 +141,18 @@ class UserHierarchy(models.Model):
         db_table = 'User_Hierarchy'
 
 
+
+class UserRole(models.Model):
+
+   # employee_id = models.ForeignKey('CustomUser', db_column='employee_id',max_length=20, on_delete=models.CASCADE, )
+    #employee_id = models.CharField(max_length=20)
+    employee_id = models.CharField(max_length=13, unique=True)
+    supervisor_id = models.CharField(max_length=20, null=True, blank= True)
+    is_manager = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=1)
+
+
+    class Meta:
+        db_table = 'User_Role'
 
