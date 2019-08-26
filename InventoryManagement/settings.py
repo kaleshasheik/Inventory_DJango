@@ -25,7 +25,7 @@ SECRET_KEY = 'q894l$t3y0jqyihzcor#0xkpm=!u7vc(=(+bv0v9p@-noa@&_)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.203.199.53','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['10.203.199.53','localhost','127.0.0.1','10.203.199.139']
 
 
 # Application definition
@@ -80,17 +80,21 @@ WSGI_APPLICATION = 'InventoryManagement.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# superuser@test.com / password123
+
 DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test2',
+        'NAME': 'test3',
         'USER': 'root',
         'PASSWORD':'Pa$$w0rd@786'
 
     }
 
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -168,7 +172,7 @@ STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = '10.203.193.48'
+EMAIL_HOST = 'outlook.office365.com'
 EMAIL_HOST_USER = 'kalesha.sheik@aricent.com'
-EMAIL_HOST_PASSWORD = 'SKhappy@018'
-EMAIL_PORT = 25
+EMAIL_HOST_PASSWORD = 'SKhappy@029'
+EMAIL_PORT = 587
